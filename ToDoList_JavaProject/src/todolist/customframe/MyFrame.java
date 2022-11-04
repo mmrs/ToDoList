@@ -5,8 +5,6 @@
  */
 package todolist.customframe;
 
-import java.awt.AWTEventMulticaster;
-import java.awt.AWTException;
 import todolist.about.AboutClass;
 import todolist.icon.MyIconPack;
 import todolist.listdata.Data;
@@ -16,29 +14,21 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
-import java.awt.CheckboxMenuItem;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Menu;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
 import java.awt.Toolkit;
-import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.EOFException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -49,22 +39,14 @@ import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
-import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TablePositionBase;
-import javax.swing.Box;
-import javax.swing.DefaultCellEditor;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -72,9 +54,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.StyleConstants;
-import static jdk.nashorn.internal.parser.TokenType.EOF;
 
 /**
  * *
@@ -88,6 +67,8 @@ public final class MyFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private final JPanel buttonpanel;
+    
+    public static final  String HOME_DIR = System.getProperty("user.home");
 
     private JLabel timeLabel;
 
@@ -495,10 +476,8 @@ public final class MyFrame extends JFrame {
     private void saveList() {
 
         try {
-            String pathtosave = ("C:\\ToDoList\\Data\\");
-            File myfile = new File(pathtosave);
-            myfile.mkdirs();
-            myfile = new File("C:\\ToDoList\\Data\\DontDelete.ms");
+
+            File myfile = new File(HOME_DIR + "/.TodoList.ms");
             try (ObjectOutputStream myout = new ObjectOutputStream(new FileOutputStream(myfile))) {
                 for (int i = 0; i < mymodel.getRowCount(); i++) {
                     myvec.get(i).setFlag((boolean) mymodel.getValueAt(i, 0));
@@ -512,7 +491,7 @@ public final class MyFrame extends JFrame {
             }
 
         } catch (Exception e) {
-
+                    e.printStackTrace();
             //   System.out.println("saveList: " + e);
         }
     }
@@ -526,7 +505,7 @@ public final class MyFrame extends JFrame {
 
         String tasklist = null;
         Data inputdata;
-        String pathtoload = "C:\\ToDoList\\Data\\DontDelete.ms";
+        String pathtoload = HOME_DIR +  "/.TodoList.ms";
         File myfile = new File(pathtoload);
         ObjectInputStream myin = null;
         try {
@@ -542,7 +521,7 @@ public final class MyFrame extends JFrame {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }
